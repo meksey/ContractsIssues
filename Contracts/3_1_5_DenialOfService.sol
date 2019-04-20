@@ -2,21 +2,12 @@ pragma solidity ^0.5.1;
 
 contract MyContract
 {
-    uint public balance;
-
-    constructor() public
+  function give_presents(address[] _winners) public
+  {
+    uint len = _winners.length;
+    for (uint i=0; i<len; i++)
     {
-        balance = 0;
+      require(_winners[i].send(10));
     }
-
-    function withdraw(address payable _user) public
-    {
-        balance = 0;
-        _user.send(balance);
-    }
-
-    function() payable external
-    {
-        balance += msg.value;
-    }
+  }
 }
